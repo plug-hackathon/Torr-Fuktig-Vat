@@ -30,7 +30,7 @@ router.register(r'sensordata', SensorDataViewsets)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api', include(router.urls)),
+    url(r'^api/', include(router.urls)),
     url(r'^', BaseTemplateView.as_view()),
     url(r'^post/', PostTest.as_view()),
 ]

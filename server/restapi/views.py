@@ -19,7 +19,6 @@ class PostTest(generic.View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super(PostTest, self).dispatch(request, *args, **kwargs)
-      
 
     def post(self, request, *args, **kwargs):
         req = request.__dict__['environ']['HTTP_USER_AGENT'].split(',')
