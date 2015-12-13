@@ -3,6 +3,8 @@ from rest_framework import viewsets
 from .models import SensorData
 from .serializers import SensorDataSerializer
 
+from django.core.mail import send_mail
+
 # Decorators
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -10,6 +12,10 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 from django.http import HttpResponse
 from pprint import pprint
+
+# Signals
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 class SensorDataViewsets(viewsets.ModelViewSet):
     queryset = SensorData.objects.all()
@@ -19,7 +25,7 @@ class PostTest(generic.View):
     @method_decorator(csrf_exempt)
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
-        print("In here")
+        print("In 'PostTest > dispatch'")
         return super(PostTest, self).dispatch(request, *args, **kwargs)
 
     @csrf_exempt
@@ -34,3 +40,9 @@ class PostTest(generic.View):
         print('Now saved')
 
         return HttpResponse("OK")
+
+@receiver(pre_save, sender=SensorData)
+def pre_save_test(sender, instance, **kwargs):
+    if instance.__dict__['temp_air'] > 40:
+        print("TEMP: ", instance.__dict__['temp_air'])
+        # send_mail("test subject", "test body", "from@test.com", ["to@test.com"], fail_silently=False)
