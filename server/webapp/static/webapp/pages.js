@@ -1,6 +1,6 @@
 window.addEventListener("load", function () {
   //var server = "http://188.226.137.177:8000/sensordata"
-  var server = "http://localhost:8000/api/sensordata/";
+  var server = "http://localhost:8000/api/sensordata/"
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", function (response) {
     var r = response.target.response;
