@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
     var json = JSON.parse(r);
 
     var data = {
-        labels : ["46", "47", "48", "49", "50"],
+        labels : [],
         datasets : [
           {
             fillColor : "rgba(220,220,220,0.5)",
@@ -28,6 +28,7 @@ window.addEventListener("load", function () {
       };
       
       json.forEach(function (reading) {
+        data.labels.push(reading.created);
         var moist = data.datasets[0].data;
         moist.push(reading.moised);
         var temp = data.datasets[1].data;
