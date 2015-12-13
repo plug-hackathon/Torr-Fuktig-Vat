@@ -45,4 +45,9 @@ class PostTest(generic.View):
 def pre_save_test(sender, instance, **kwargs):
     if instance.__dict__['temp_air'] > 40:
         print("TEMP: ", instance.__dict__['temp_air'])
-        # send_mail("test subject", "test body", "from@test.com", ["to@test.com"], fail_silently=False)
+        email_sender = "tfv@fireboy.com"
+        email_recipient = "ras.sjostrom@hotmail.com"
+        subject = "Du det brinner kanske nu"
+        message = "Torr-Fuktigt-Vat sager att det ar javligt varmt hos dig."
+        
+        send_mail(subject, message, email_sender, [email_recipient], fail_silently=False)
