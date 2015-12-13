@@ -7,4 +7,4 @@ class SensorDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SensorData
-        fields = ('temp_air', 'temp_water', 'humidity', 'light', 'created')
+        fields = ('moised', 'temp_air', 'temp_water', 'light', 'created')

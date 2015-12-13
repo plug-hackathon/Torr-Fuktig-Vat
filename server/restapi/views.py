@@ -24,10 +24,8 @@ class PostTest(generic.View):
     def post(self, request, *args, **kwargs):
         req = request.__dict__['environ']['HTTP_USER_AGENT'].split(',')
         save_me = SensorData(
-            temp_air=float(req[0]),
-            temp_water=float(req[1]),
-            humidity=float(req[2]),
-            light=float(req[3])
+            moised=float(req[0]),
+            temp_air=float(req[1])
         )
         save_me.save()
         pprint(save_me.__dict__)

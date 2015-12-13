@@ -4,8 +4,7 @@ from .models import SensorData
 
 class SensorDataAdmin(admin.ModelAdmin):
     model = SensorData
-    list_display = ('temp_air', 'temp_water', 'humidity', 'light', 'created')
-    search_fields = ['temp_air', 'temp_water', 'humidity', 'light', 'created']
-
+    list_display = ('moised', 'temp_air', 'temp_water', 'light', 'created')
+    search_fields = ['moised', 'temp_air', 'temp_water', 'light', 'created']
 
 admin.site.register(SensorData, SensorDataAdmin)
