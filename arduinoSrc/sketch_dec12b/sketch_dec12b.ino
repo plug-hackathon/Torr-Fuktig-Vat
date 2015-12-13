@@ -1,5 +1,14 @@
 #include <SoftwareSerial.h>   //Library for serial communication 
 
+// Headers for the temperaturelogging 
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+#define ONE_WIRE_BUS 2
+
+#define SSID "SSID"
+#define PASS "password"
+
 SoftwareSerial esp(10,11);    //Set receiver and transmitter for esp8266
 
 /*Change the value to modify when the watering should start. Dry air
@@ -16,12 +25,19 @@ int milliSecondsDelay = 10000;
  method is called.*/
 int milliSecondsPump = 500;
 
+// Setup a oneWire instance on pin 2
+OneWire oneWire(ONE_WIRE_BUS);
+
+// Pass our oneWire reference to Dallas Temperature.
+DallasTemperature sensors(&oneWire);
+
 //Setup
 void setup() 
 {
   // initialize serial communication at 9600 bits per second:
   Serial.begin(9600);   
   pinMode(12, OUTPUT);    //Output for the water pump
+  sensors.begin();        //One wire sensors 
   
   /*-----------------Setting up esp8266-----------------*/
   esp.begin(9600);        //Set to same rate
@@ -70,5 +86,9 @@ void loop()
   //Serial.print("Actual value of sensor = ");
   //Serial.println(sensorValue);
   updateStats(sensorValue);
+
+  Serial.print(sensors.getTempCByIndex(0));
+  
   delay(milliSecondsDelay);
 }
+
