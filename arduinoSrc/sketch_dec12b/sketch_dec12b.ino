@@ -22,16 +22,20 @@ EthernetClient client;
 /*Change the value to modify when the watering should start. Dry air
  is approximately 650, very dry soil is approximately 610. Very moist
  soil yields approximately 200.*/
-int maxValueBefWatering = 610; 
+int maxValueBefWatering = 450; 
 
 /* Change of the following variable for the amount of seconds in between
  sampling for program logic (interval inbetween checking the moist 
  sensor).*/
-int milliSecondsDelay = 10000;
+int milliSecondsDelay = 20000;
+ /* This integer sets how long the pump will be on for when the waterMe
+ method is called for the first time in a row. It will increase with
+ each lap.*/
+int milliSecondsPump = 1000;
 
-/* This integer sets how long the pump will be on for when the waterMe
- method is called.*/
-int milliSecondsPump = 5000;
+/* This counter keeps track on how many times in a row the watering
+ method has been called*/
+int counter = 0;
 
 /* Following variable declares output port of pump relay*/
 int pumpPort = 9;
@@ -69,7 +73,7 @@ void updateStats(int currentMoistValue, double currentTemp)
     client.println("Host: 188.226.137.177");
     client.println("User-Agent: " + String(currentMoistValue) + "," + String(currentTemp)); // Here we enter the data
     client.println("");
-    delay(10000);
+    delay(1000);
     client.stop();
     Serial.println("Client stop");
   } 
@@ -82,9 +86,15 @@ void updateStats(int currentMoistValue, double currentTemp)
 
 void waterThePlant()
 {
-   Serial.print("In watering method because value is over my max value: " + String(maxValueBefWatering));
+   Serial.println("In watering method because value is over my max value: " + String(maxValueBefWatering));
    digitalWrite(pumpPort, HIGH);    //Start pumping
-   delay(milliSecondsPump);
+   /*Because it is hard to predict how long the pump will need to be on for it increases 
+    with the value of extraMilliseconds each time it pumps in row with the amount of 
+    milliseconds specified below. Starting out at 0 * some constant and increasing with
+    1 * same constant and so on. After it passes a lap without watering it will reset*/ 
+   int extraMilliseconds = counter * 500;     
+   Serial.println("It has been " + String(counter) + " laps in a row of watering, it will now pump for " + String(extraMilliseconds) + " extra millis.");
+   delay(milliSecondsPump + extraMilliseconds);
    digitalWrite(pumpPort,LOW);      //Stop pumping
 }
 
@@ -103,7 +113,12 @@ void printIPAddress()
 void loop()
 {
   int moistSensorValue = analogRead(A0);
-  if (moistSensorValue >= maxValueBefWatering){waterThePlant();}
+  if (moistSensorValue >= maxValueBefWatering)
+  {
+    waterThePlant();
+    counter++;    //For extra pump time
+  }
+  else { counter = 0;}    //Resetting for right starting value for watering time next watering session
   sensors.requestTemperatures();
   double temp = sensors.getTempCByIndex(0);
   updateStats(moistSensorValue, temp);
