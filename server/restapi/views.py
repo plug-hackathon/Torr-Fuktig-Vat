@@ -6,7 +6,7 @@ from .serializers import SensorDataSerializer
 # Decorators
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-import json
+
 from django.views import generic
 from django.http import HttpResponse
 from pprint import pprint
@@ -17,6 +17,7 @@ class SensorDataViewsets(viewsets.ModelViewSet):
 
 class PostTest(generic.View):
     @method_decorator(csrf_exempt)
+    @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         return super(PostTest, self).dispatch(request, *args, **kwargs)
 
