@@ -19,6 +19,7 @@ class PostTest(generic.View):
     @method_decorator(csrf_exempt)
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
+        print("In here")
         return super(PostTest, self).dispatch(request, *args, **kwargs)
 
     @csrf_exempt
