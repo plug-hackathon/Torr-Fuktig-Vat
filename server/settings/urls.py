@@ -20,7 +20,7 @@ from django.contrib import admin
 
 from rest_framework.routers import DefaultRouter
 
-from restapi.views import SensorDataViewsets
+from restapi.views import SensorDataViewsets, PostTest
 
 
 router = DefaultRouter()
@@ -29,4 +29,5 @@ router.register(r'sensordata', SensorDataViewsets)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
+    url(r'^post/', PostTest.as_view()),
 ]

@@ -5,9 +5,9 @@ from django.db import models
 import datetime
 
 class SensorData(models.Model):
-    temp_air = models.IntegerField(default=0)
-    temp_water = models.IntegerField(default=0)
-    humidity = models.IntegerField(default=0)
-    light = models.IntegerField(default=0)
-    created = models.DateField(auto_now_add=True)
+    temp_air = models.FloatField(default=0.0)
+    temp_water = models.FloatField(default=0.0)
+    humidity = models.FloatField(default=0.0)
+    light = models.FloatField(default=0.0)
+    created = models.DateTimeField(auto_now_add=True)
 
