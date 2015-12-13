@@ -20,6 +20,7 @@ class PostTest(generic.View):
     def dispatch(self, request, *args, **kwargs):
         return super(PostTest, self).dispatch(request, *args, **kwargs)
 
+    @csrf_exempt
     def post(self, request, *args, **kwargs):
         req = request.__dict__['environ']['HTTP_USER_AGENT'].split(',')
         save_me = SensorData(
